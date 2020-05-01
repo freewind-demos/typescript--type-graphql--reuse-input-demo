@@ -1,13 +1,13 @@
-TypeScript "type-graphql" Demo
+TypeScript "type-graphql" Reuse Input Demo
 ===========================
 
-与通常的graphql开发流程正好相反：
-1. 通过class+decorator定义class
-2. 生成相应的graphql需要的schema
+在graphql中，由于某些原因，将input object type与object type强制分开，需要定义两遍。
 
-有些地方需要注意：
-1. 很多Field需要显示定义类型
-2. buildSchema处指定resolver实例的办法有点复杂，原因是type-graphql默认基于dependency injection来设计，所以如果我们不想用，反而比较麻烦（不过也还好）
+https://stackoverflow.com/questions/41743253/whats-the-point-of-input-type-in-graphql
+
+虽然可以理解，在某些情况，这非常繁琐，并且在代码层面也会增加一些误会（比如某些情况下，某个input object type与object type必须始终保持一致）
+
+此时可以利用type-graphql，通过class和decorator来标注，再反向生成graphql的schema，可以解决这个问题。
 
 ```
 npm install

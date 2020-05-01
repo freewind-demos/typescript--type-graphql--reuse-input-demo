@@ -1,28 +1,21 @@
 import {graphql} from 'graphql';
 import 'reflect-metadata';
 import {buildSchema} from 'type-graphql';
+import path from 'path';
 
-import RecipeResolver from './RecipeResolver';
-import ResolveContainer from './ResolverContainer';
+import UiQueryResolver from './UiQueryResolver';
 
 async function main() {
   const schema = await buildSchema({
-    resolvers: [RecipeResolver],
-    container: ResolveContainer,
+    resolvers: [UiQueryResolver],
+    emitSchemaFile: path.resolve(__dirname, '../dist/schema.graphql'),
     validate: false // https://github.com/MichalLytek/type-graphql/issues/150
   });
 
-  graphql(schema, '{ recipes { title }}').then(result => {
+  graphql(schema, '{ standardize(uiQuery: { field1: " aa ", field2: "  bb "}) { field1, field2 }}').then(result => {
     console.log(JSON.stringify(result));
   });
 
-  graphql(schema, '{ recipe(id:"111") { title }}').then(result => {
-    console.log(JSON.stringify(result));
-  });
-
-  graphql(schema, '{ searchRecipes(keyword:"00") { title }}').then(result => {
-    console.log(JSON.stringify(result));
-  });
 }
 
 main();
